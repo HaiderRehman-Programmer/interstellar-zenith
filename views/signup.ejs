@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A premium Node.js authentication system with SQLite and EJS.">
+    <title>Interstellar Auth - Signup</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Create Account</h2>
+
+        <% if (success_msg && success_msg.length> 0) { %>
+            <div class="alert alert-success">
+                <%= success_msg %>
+            </div>
+            <% } %>
+
+                <% if (error_msg && error_msg.length> 0) { %>
+                    <div class="alert alert-error">
+                        <%= error_msg %>
+                    </div>
+                    <% } %>
+
+                        <% if (locals.errors && errors.length> 0) { %>
+                            <div class="alert alert-error">
+                                <ul style="margin: 0; padding-left: 1.2rem;">
+                                    <% errors.forEach(error=> { %>
+                                        <li>
+                                            <%= error.msg %>
+                                        </li>
+                                        <% }); %>
+                                </ul>
+                            </div>
+                            <% } %>
+
+                                <form action="/signup" method="POST" id="signupForm">
+                                    <div class="form-group">
+                                        <label for="username">Username</label>
+                                        <input type="text" id="username" name="username" required minlength="3">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" id="email" name="email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Password</label>
+                                        <input type="password" id="password" name="password" required minlength="6"
+                                            placeholder="Min 6 characters">
+                                    </div>
+                                    <button type="submit">Sign Up</button>
+                                </form>
+
+                                <div class="nav-links">
+                                    Already have an account? <a href="/login">Login</a>
+                                </div>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function (e) {
+            const username = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            if (username.length < 3) {
+                alert('Username must be at least 3 characters');
+                e.preventDefault();
+            }
+            if (pass.length < 6) {
+                alert('Password must be at least 6 characters');
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interstellar Auth - Premium Node.js Authentication & Database Solution.">
+    <title>Interstellar Auth - Home</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Interstellar Auth</h1>
+        <p style="text-align: center; color: #94a3b8;">A modern Node.js Authentication System</p>
+
+        <% if (success_msg && success_msg.length> 0) { %>
+            <div class="alert alert-success">
+                <%= success_msg %>
+            </div>
+            <% } %>
+
+                <% if (error_msg && error_msg.length> 0) { %>
+                    <div class="alert alert-error">
+                        <%= error_msg %>
+                    </div>
+                    <% } %>
+
+                        <div class="nav-links" style="margin-top: 2rem;">
+                            <% if (user) { %>
+                                <p>Welcome back, <strong>
+                                        <%= user.username %>
+                                    </strong>!</p>
+                                <div style="display: flex; flex-direction: column; gap: 10px;">
+                                    <button onclick="window.location.href='/dashboard'">Go to Dashboard</button>
+                                    <button onclick="window.location.href='/logout'"
+                                        style="background: #334155;">Logout</button>
+                                </div>
+                                <% } else { %>
+                                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                                        <button onclick="window.location.href='/login'">Login</button>
+                                        <button onclick="window.location.href='/signup'"
+                                            style="background: #334155;">Sign Up</button>
+                                    </div>
+                                    <% } %>
+                        </div>
+
+                        <div class="api-demo" id="public-api-status">
+                            Loading public API status...
+                        </div>
+    </div>
+
+    <script>
+        fetch('/api/public-data')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('public-api-status').innerText = `API Status: ${data.message} (${new Date(data.timestamp).toLocaleTimeString()})`;
+            })
+            .catch(() => {
+                document.getElementById('public-api-status').innerText = 'API Status: Unavailable';
+            });
+    </script>
+</body>
+
+</html>

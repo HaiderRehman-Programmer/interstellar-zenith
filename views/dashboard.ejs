@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="User Dashboard for Interstellar Auth.">
+    <title>Interstellar Auth - Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div class="container" style="max-width: 600px;">
+        <h2>User Dashboard</h2>
+
+        <% if (success_msg && success_msg.length> 0) { %>
+            <div class="alert alert-success">
+                <%= success_msg %>
+            </div>
+            <% } %>
+
+                <% if (error_msg && error_msg.length> 0) { %>
+                    <div class="alert alert-error">
+                        <%= error_msg %>
+                    </div>
+                    <% } %>
+
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                            <% if (user.profile_pic) { %>
+                                <img src="<%= user.profile_pic %>" alt="Profile Picture" class="profile-pic">
+                                <% } else { %>
+                                    <div
+                                        style="width: 100px; height: 100px; background: #334155; border-radius: 50%; margin: 1rem auto; display: flex; align-items: center; justify-content: center; border: 3px solid #38bdf8;">
+                                        <span style="font-size: 2rem;">👤</span>
+                                    </div>
+                                    <% } %>
+                                        <h3>
+                                            <%= user.username %>
+                                        </h3>
+                                        <p style="color: #94a3b8;">
+                                            <%= user.email %>
+                                        </p>
+                        </div>
+
+                        <div style="border-top: 1px solid #334155; padding-top: 1.5rem;">
+                            <h4>Upload Profile Picture</h4>
+                            <form action="/upload" method="POST" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <input type="file" name="profilePic" accept="image/*" required>
+                                </div>
+                                <button type="submit">Upload</button>
+                            </form>
+                        </div>
+
+                        <div style="margin-top: 2rem; border-top: 1px solid #334155; padding-top:1.5rem;">
+                            <h4>API Data Consumption Demo</h4>
+                            <p style="font-size: 0.875rem; color: #94a3b8;">This data is fetched from
+                                <code>/api/user/profile</code> via AJAX:</p>
+                            <div id="api-result" class="api-demo">
+                                Fetching profile data...
+                            </div>
+                        </div>
+
+                        <div class="nav-links">
+                            <a href="/">Back Home</a> | <a href="/logout">Logout</a>
+                        </div>
+    </div>
+
+    <script>
+        fetch('/api/user/profile')
+            .then(res => res.json())
+            .then(data => {
+                const resultDiv = document.getElementById('api-result');
+                resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            })
+            .catch(err => {
+                document.getElementById('api-result').innerText = 'Error fetching API data.';
+            });
+    </script>
+</body>
+
+</html>
